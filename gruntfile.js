@@ -7,15 +7,15 @@ module.exports = function(grunt){
 			      	sizes: [{ 
 				        name: "small",
 				        aspectRatio: false,
-				        height: "330px",
-				        width: "620px",
-				        quality: 80
+				        height: "33px",
+				        width: "62px",
+				        quality: 20
 			      	},{
 						name: "large",
 				        aspectRatio: false,
-				        width: "400px",
-				        height: "600px",
-				        quality: 60
+				        width: "200px",
+				        height: "300px",
+				        quality: 50
 			      	}]
 				},
 				files: [{
@@ -32,11 +32,22 @@ module.exports = function(grunt){
 					create: ['img']
 		    	}
 		    }
+		},
+		compress: {
+			main: {
+				options: {
+					mode: 'gzip'
+				},
+				expand: true,
+				cwd: 'css/',
+				src: ['**/*'],
+				dest: 'public/'
+			}
 		}
 	});
-
 grunt.loadNpmTasks('grunt-responsive-images');
 grunt.loadNpmTasks('grunt-mkdir');
-grunt.registerTask('default', ['mkdir', 'responsive_images']);
+grunt.loadNpmTasks('grunt-contrib-compress');
+grunt.registerTask('default', ['mkdir', 'responsive_images', 'compress']);
 };
 
