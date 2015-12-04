@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <?php if (substr_count($_SERVER[‘HTTP_ACCEPT_ENCODING’], ‘gzip’)) ob_start(“ob_gzhandler”); else ob_start(); ?>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content=" Mobile Portfolio ">
+    <meta name="description" content=" Mobile Portfolio">
     <meta name="author" content=" Tim JK Strickland">
     <title>Tim JK Strickland: Portfolio</title>
 

@@ -9,7 +9,7 @@ module.exports = function(grunt){
 				        aspectRatio: false,
 				        height: "33px",
 				        width: "62px",
-				        quality: 20
+				        quality: 50
 			      	},{
 						name: "large",
 				        aspectRatio: false,
@@ -39,7 +39,7 @@ module.exports = function(grunt){
 					mode: 'gzip'
 				},
 				expand: true,
-				cwd: 'css/',
+				cwd: '../frontend-nanodegree-mobile-portfolio',
 				src: ['**/*'],
 				dest: 'public/'
 			}
