@@ -1,53 +1,49 @@
 module.exports = function(grunt){
 	grunt.initConfig({
 		responsive_images: {
-			dev: {
-		    	options: {
-			      	engine: 'im',
-			      	sizes: [{ 
-				        name: "small",
-				        aspectRatio: false,
-				        height: "33px",
-				        width: "62px",
-				        quality: 50
-			      	},{
-						name: "large",
-				        aspectRatio: false,
-				        width: "200px",
-				        height: "300px",
-				        quality: 50
-			      	}]
-				},
-				files: [{
-					expand: true,
-					src: ['*.{jpg,gif,png}'],
-					cwd:'img_src/',
-			    	dest:'img/'
-				}]
+	    	options: {
+		    	engine: 'im',
+		    	sizes: [{
+			      	name: 'opt',
+			      	height: 150,
+			      	width: 150,
+			      	quality: 50
+			    }],
+		      	files: [{
+		        	expand: true,
+		        	src: ['*.{jpg,gif,png}'],
+		        	cwd:'img_src/',
+		        	dest:'img/'
+		    	}]
 			}
+		  },
+		cssmin: {
+		  target: {
+		    files: [{
+		      expand: true,
+		      cwd: '/css',
+		      src: ['*.css', '!*.min.css'],
+		      dest: 'release/css',
+		      ext: '.min.css'
+		    }]
+		  }
 		},
-		mkdir: {
-			dev: {
-		    	options: {
-					create: ['img']
-		    	}
-		    }
-		},
-		compress: {
-			main: {
-				options: {
-					mode: 'gzip'
+		htmlmin: {                                    // Task 
+			dist: {                                 // Target 
+				options: {                         	// Target options 
+					removeComments: true,
+					collapseWhitespace: true
 				},
-				expand: true,
-				cwd: '../frontend-nanodegree-mobile-portfolio',
-				src: ['**/*'],
-				dest: 'public/'
+				files: {                                // Dictionary of files 
+					'index.html': 'index.min.html',     	// 'destination': 'source'
+				}
 			}
 		}
+
 	});
 grunt.loadNpmTasks('grunt-responsive-images');
-grunt.loadNpmTasks('grunt-mkdir');
-grunt.loadNpmTasks('grunt-contrib-compress');
-grunt.registerTask('default', ['mkdir', 'responsive_images', 'compress']);
+grunt.loadNpmTasks('grunt-contrib-cssmin');
+grunt.loadNpmTasks('grunt-contrib-htmlmin');
+grunt.registerTask('default', ['responsive_images', 'cssmin', 'htmlmin']);
 };
 
