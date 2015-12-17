@@ -421,39 +421,27 @@ var resizePizzas = function(size) {
 
   changeSliderLabel(size);
 
-   // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
-  function determineDx (elem, size) {
-    var oldWidth = elem.offsetWidth;
-    var windowWidth = document.querySelector("#randomPizzas").offsetWidth;
-    var oldSize = oldWidth / windowWidth;
-
-    // TODO: change to 3 sizes? no more xl?
-    // Changes the slider value to a percent width
-    function sizeSwitcher (size) {
+var newWidth;
+  // Iterates through pizza elements on the page and changes their widths
+  function changePizzaSizes(size) {
       switch(size) {
         case "1":
-          return 0.25;
+          newWidth = 25;
+          break;
         case "2":
-          return 0.3333;
+          newWidth = 33.3;
+          break;
         case "3":
-          return 0.5;
+          newWidth = 50;
+          break;
         default:
           console.log("bug in sizeSwitcher");
       }
-    }
-
-    var newSize = sizeSwitcher(size);
-    var dx = (newSize - oldSize) * windowWidth;
-
-    return dx;
-  }
-
-  // Iterates through pizza elements on the page and changes their widths
-  function changePizzaSizes(size) {
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
-      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+      // create var outside for loop to de-jank
+    var randomPizzas = document.querySelectorAll(".randomPizzaContainer");
+    for (var i = 0; i < randomPizzas.length; i++) {
+      // added percentage to help with styles
+      randomPizzas[i].style.width = newWidth + "%";
     }
   }
 
@@ -469,6 +457,7 @@ var resizePizzas = function(size) {
 window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
+
 for (var i = 2; i < 100; i++) {
   var pizzasDiv = document.getElementById("randomPizzas");
   pizzasDiv.appendChild(pizzaElementGenerator(i));
@@ -494,6 +483,8 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
   console.log("Average time to generate last 10 frames: " + sum / 10 + "ms");
 }
 
+
+
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
@@ -501,11 +492,19 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
-
-  var items = document.querySelectorAll('.mover');
+  // keep longer calls (a.b.c) outside loops to optimize perf
+  // plus they're easier for the browser to update
+  var top = document.body.scrollTop;
+  var items = document.getElementsByClassName('mover');
+  // EDIT: this frees up the 5 unique values from the for loop below
+  var phases = [];
+  for(var i = 0; i < 5; i++){
+    phases[i] = Math.sin((top / 1250)+ i);
+  }
+  // using 
   for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    var numPixels =  items[i].basicLeft + 100 * phases[i % 5] + 'px';
+    items[i].style.transform = "translateX(" + numPixels + ")";
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -525,7 +524,15 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
+  var rowTop = 0;
   for (var i = 0; i < 200; i++) {
+    // EDIT: great tip from mcs in the Udacity forums -> this if statement
+    // shows that if the pizzas are outside the window's height, stop creating
+    // more pizzas. This should give a boost to perf as I'm not creating more pizzas
+    // than I need
+    if (rowTop > window.innerHeight) {
+      break;
+    }
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
