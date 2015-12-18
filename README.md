@@ -1,34 +1,29 @@
 ## Website Performance Optimization portfolio project
 
-Your challenge, if you wish to accept it (and we sure hope you will), is to optimize this online portfolio for speed! In particular, optimize the critical rendering path and make this page render as quickly as possible by applying the techniques you've picked up in the [Critical Rendering Path course](https://www.udacity.com/course/ud884).
-
-To get started, check out the repository, inspect the code,
+This project's goal is to optimize the online portfolio for speed! The critical rendering path has been optimized for index.html, and in the view folder, I made this page render more quickly by eliminating jank that occurs in main.js. I applied the techniques from [Critical Rendering Path course](https://www.udacity.com/course/ud884) and [Browser Rendering Optimization course](https://www.udacity.com/course/browser-rendering-optimization--ud860).
 
 ### Getting started
 
 ####Part 1: Optimize PageSpeed Insights score for index.html
 
-Some useful tips to help you get started:
-
-1. Check out the repository
-1. To inspect the site on your phone, you can run a local server
-
+Using the following code in the terminal:
   ```bash
   $> cd /path/to/your-project-folder
   $> python -m SimpleHTTPServer 8080
   ```
 
 1. Open a browser and visit localhost:8080
-1. Download and install [ngrok](https://ngrok.com/) to make your local server accessible remotely.
+2. Download and install [ngrok](https://ngrok.com/) to make your local server accessible remotely.
 
   ``` bash
   $> cd /path/to/your-project-folder
   $> ngrok http 8080
   ```
+3. Copy the public URL ngrok gives you and try running it through PageSpeed Insights. 
 
-1. Copy the public URL ngrok gives you and try running it through PageSpeed Insights! Optional: [More on integrating ngrok, Grunt and PageSpeed.](http://www.jamescryer.com/2014/06/12/grunt-pagespeed-and-ngrok-locally-testing/)
+#####Outcome:
+I found that the CSS could be minified and put inline (which, I don't think is the best idea for legibility, but for performance, it put it over 90 on PageSpeed), as well as minify the HTML to the same conclusion.
 
-Profile, optimize, measure... and then lather, rinse, and repeat. Good luck!
 
 ####Part 2: Optimize Frames per Second in pizza.html
 
