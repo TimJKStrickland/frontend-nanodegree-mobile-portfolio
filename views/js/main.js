@@ -501,7 +501,8 @@ function updatePositions() {
   for(var i = 0; i < 5; i++){
     phases[i] = Math.sin((top / 1250)+ i);
   }
-  // using 
+  // using transform: translateX makes the animation independent of layout,
+  // so less browser heavy lifting to make the pizzas move
   for (var i = 0; i < items.length; i++) {
     var numPixels =  items[i].basicLeft + 100 * phases[i % 5] + 'px';
     items[i].style.transform = "translateX(" + numPixels + ")";
