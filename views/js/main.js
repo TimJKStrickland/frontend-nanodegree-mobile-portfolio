@@ -440,8 +440,7 @@ var newWidth;
       // create var outside for loop to de-jank
     var randomPizzas = document.querySelectorAll(".randomPizzaContainer");
     for (var i = 0; i < randomPizzas.length; i++) {
-      // added percentage to help with styles
-      randomPizzas[i].style.width = newWidth + "%";
+      randomPizzas[i].style.width = newWidth + "px";
     }
   }
 
@@ -505,7 +504,8 @@ function updatePositions() {
   // making the pizzas a render layer. so less browser heavy lifting to make
  // the pizzas move
   for (var i = 0; i < items.length; i++) {
-    var numPixels =  items[i].basicLeft + 100 * phases[i % 5] + 'px';
+    var phase = phases[i % 5];
+    var numPixels =  items[i].basicLeft + 100 * phase + 'px';
     items[i].style.transform = "translateX(" + numPixels + ")";
   }
 
@@ -532,9 +532,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // shows that if the pizzas are outside the window's height, stop creating
     // more pizzas. This should give a boost to perf as I'm not creating more pizzas
     // than I need
-    if (rowTop > window.innerHeight) {
-      break;
-    }
+    // if (rowTop > window.innerHeight) {
+    //   break;
+    // }
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
@@ -542,6 +542,7 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
+    elem.style.left = '30px';
     document.querySelector("#movingPizzas1").appendChild(elem);
   }
   updatePositions();
