@@ -18,6 +18,8 @@ cameron *at* udacity *dot* com
 
 // As you may have realized, this website randomly generates pizzas.
 // Here are arrays of all possible pizza ingredients.
+
+'use strict';
 var pizzaIngredients = {};
 pizzaIngredients.meats = [
   "Pepperoni",
@@ -437,9 +439,12 @@ var newWidth;
         default:
           console.log("bug in sizeSwitcher");
       }
-      // create var outside for loop to de-jank
-    var randomPizzas = document.querySelectorAll(".randomPizzaContainer");
-    for (var i = 0; i < randomPizzas.length; i++) {
+      // create var outside for loop to de-jank and changed querySelectorAll to
+      // the faster getElementsbyClassName
+    var randomPizzas = document.getElementsByClassName("randomPizzaContainer");
+    // following the advice from the reviewer, it's more efficient to save a local 
+    // var for randomPizzas.length and access that in the loop (ig. a is faster than a.b)
+    for (var i = 0, len=randomPizzas.length; i < len; i++) {
       randomPizzas[i].style.width = newWidth + "px";
     }
   }
@@ -456,9 +461,10 @@ var newWidth;
 window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
-
+// moved pizzasDiv outside the for loop for just one call to the DOM.
+var pizzasDiv = document.getElementById("randomPizzas");
 for (var i = 2; i < 100; i++) {
-  var pizzasDiv = document.getElementById("randomPizzas");
+  
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
 
@@ -502,10 +508,11 @@ function updatePositions() {
   }
   // using transform: translateX makes the animation independent of paint by
   // making the pizzas a render layer. so less browser heavy lifting to make
- // the pizzas move
+ // the pizzas move. Also moved numPixels outside the loop for more efficient looping.
+  var numPixels;
   for (var i = 0; i < items.length; i++) {
-    var phase = phases[i % 5];
-    var numPixels =  items[i].basicLeft + 100 * phase + 'px';
+    // got rid of separate local var for phases
+    numPixels = 100 * phases[i % 5] + 'px';
     items[i].style.transform = "translateX(" + numPixels + ")";
   }
 
@@ -527,23 +534,27 @@ document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
   var rowTop = 0;
-  for (var i = 0; i < 200; i++) {
-    // EDIT: great tip from mcs in the Udacity forums -> this if statement
-    // shows that if the pizzas are outside the window's height, stop creating
-    // more pizzas. This should give a boost to perf as I'm not creating more pizzas
-    // than I need
-    // if (rowTop > window.innerHeight) {
-    //   break;
-    // }
-    var elem = document.createElement('img');
-    elem.className = 'mover';
-    elem.src = "images/pizza.png";
-    elem.style.height = "100px";
-    elem.style.width = "73.333px";
-    elem.basicLeft = (i % cols) * s;
-    elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    elem.style.left = '30px';
-    document.querySelector("#movingPizzas1").appendChild(elem);
-  }
+  var winHeight = window.screen.height;
+  var elem;
+  // moved variable to outside the for loop so it's more efficient (a.b < a)
+  var movingPizzas1 = document.getElementById("movingPizzas1");
+    for (var i = 0; i < 200; i++) {
+      // EDIT: great tip from mcs in the Udacity forums -> this if statement
+      // shows that if the pizzas are outside the window's height, stop creating
+      // more pizzas. This should give a boost to perf as I'm not creating more pizzas
+      // than I need
+        if (rowTop > winHeight) {
+          break;
+        }
+      elem = document.createElement('img');
+      elem.className = 'mover';
+      elem.src = "images/pizza.png";
+      elem.style.height = "100px";
+      elem.style.width = "73.333px";
+      // took out .basicLeft because translate is a more efficient animation method
+      elem.style.left = (i % cols) * s + 'px';
+      elem.style.top = (Math.floor(i / cols) * s) + 'px';
+      movingPizzas1.appendChild(elem);
+    }
   updatePositions();
-});
+})
