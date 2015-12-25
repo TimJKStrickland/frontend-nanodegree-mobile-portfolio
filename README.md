@@ -89,6 +89,23 @@ function updatePositions() {
   }
 
 ```
+I also optimized the generation of the background pizzas by dynamically calculating the window height and width:
+```
+  // calculates how many pizzas can appear onscreen dynamically
+  // by dividing the height of the image by the height of the window
+  var totalPizzaHeight = (window.innerHeight / 100);
+  // calculates how many pizzas can appear onscreen dynamically
+  // by dividing the width of the image by the width of the window
+  var totalPizzaWidth = (window.innerWidth / 73.333);
+  // all pizzas calculated
+  var totalPizzas = totalPizzaWidth * totalPizzaHeight / 4;
+  var elem;
+  // moved variable to outside the for loop so it's more efficient (a.b < a)
+  var movingPizzas1 = document.getElementById("movingPizzas1");
+    for (var i = 0; i < totalPizzas; i++) {
+      elem = document.createElement('img');
+      ...
+```
 4. I optimized the images and minimized both the HTML and CSS.
 
 ##Next steps
