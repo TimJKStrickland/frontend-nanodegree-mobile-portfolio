@@ -31,7 +31,7 @@ To optimize views/pizza.html, I modified views/js/main.js until your frames per 
 
 I did a couple things to make this work:
 1. I replaced all references for querySelector and querySelectorAll and replaced them with either getElementbyId and getElementsbyClass. This was found in the forum to be a more efficient method of selecting the needed ID or class.
-2. I made variables outside the for loops in the function updatePositions because it slows down the CPU to constantly have to refer to the delineations of document.body.[necessaryobject], and it's much faster to refer to variables that have cached that info already. These changes were made in the functions updatePositions and changePizzaSizes as seen below
+2. I made variables outside the for loops in the function updatePositions because it slows down the CPU to constantly have to refer to the delineations of document.body.[necessaryobject], and it's much faster to refer to variables that have cached that info already. These changes were made in the functions updatePositions and changePizzaSizes as seen below:
 ```
 //calling this outside the switch method gives the variable definitive position
 var newWidth;
