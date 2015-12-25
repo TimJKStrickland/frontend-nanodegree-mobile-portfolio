@@ -445,7 +445,7 @@ var newWidth;
     // following the advice from the reviewer, it's more efficient to save a local 
     // var for randomPizzas.length and access that in the loop (ig. a is faster than a.b)
     for (var i = 0, len=randomPizzas.length; i < len; i++) {
-      randomPizzas[i].style.width = newWidth + "px";
+      randomPizzas[i].style.width = newWidth + "%";
     }
   }
 
@@ -534,18 +534,18 @@ document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
   var rowTop = 0;
-  var winHeight = window.screen.height;
+  // calculates how many pizzas can appear onscreen dynamically
+  // by dividing the height of the image by the height of the window
+  var totalPizzaHeight = (window.innerHeight / 100);
+  // calculates how many pizzas can appear onscreen dynamically
+  // by dividing the width of the image by the width of the window
+  var totalPizzaWidth = (window.innerWidth / 73.333);
+  // all pizzas calculated
+  var totalPizzas = totalPizzaWidth * totalPizzaHeight / 4;
   var elem;
   // moved variable to outside the for loop so it's more efficient (a.b < a)
   var movingPizzas1 = document.getElementById("movingPizzas1");
-    for (var i = 0; i < 200; i++) {
-      // EDIT: great tip from mcs in the Udacity forums -> this if statement
-      // shows that if the pizzas are outside the window's height, stop creating
-      // more pizzas. This should give a boost to perf as I'm not creating more pizzas
-      // than I need
-        if (rowTop > winHeight) {
-          break;
-        }
+    for (var i = 0; i < totalPizzas; i++) {
       elem = document.createElement('img');
       elem.className = 'mover';
       elem.src = "images/pizza.png";

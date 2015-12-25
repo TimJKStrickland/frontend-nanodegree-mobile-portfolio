@@ -40,6 +40,7 @@ form {
    -o-transform: translateZ(0);
    transform: translateZ(0);
   /* added based on reviwers suggestion. Helps to use GPU for hardware accelerated CSS*/
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
