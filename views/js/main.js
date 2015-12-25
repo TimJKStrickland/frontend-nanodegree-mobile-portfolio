@@ -422,7 +422,7 @@ var resizePizzas = function(size) {
   }
 
   changeSliderLabel(size);
-
+//calling this outside the switch method gives the variable definitive position
 var newWidth;
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {

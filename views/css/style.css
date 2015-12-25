@@ -31,12 +31,16 @@ form {
 
 .mover {
   position: fixed;
-  left: 500px;
   width: 256px;
   z-index: -1;
- /* background-image: url(images/pizza.png);
-  height: 100px;
-  width: 73.333px;*/
+  /* added based on reviwers suggestion. Helps to use GPU for hardware accelerated CSS*/
+   -webkit-transform: translateZ(0);
+   -moz-transform: translateZ(0);
+   -ms-transform: translateZ(0);
+   -o-transform: translateZ(0);
+   transform: translateZ(0);
+  /* added based on reviwers suggestion. Helps to use GPU for hardware accelerated CSS*/
+  backface-visibility: hidden;
 }
 
 .randomPizzaContainer {
