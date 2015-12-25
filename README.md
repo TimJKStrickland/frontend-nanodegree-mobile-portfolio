@@ -30,8 +30,10 @@ I found that the CSS could be minified and put inline (which, I don't think is t
 To optimize views/pizza.html, I modified views/js/main.js until your frames per second rate is 60 fps or higher.
 
 I did a couple things to make this work:
-1. I replaced all references for querySelector and querySelectorAll and replaced them with either getElementbyId and getElementsbyClass. This was found in the forum to be a more efficient method of selecting the needed ID or class.
-2. I made variables outside the for loops in the function updatePositions because it slows down the CPU to constantly have to refer to the delineations of document.body.[necessaryobject], and it's much faster to refer to variables that have cached that info already. These changes were made in the functions updatePositions and changePizzaSizes as seen below:
+
+1) I replaced all references for querySelector and querySelectorAll and replaced them with either getElementbyId and getElementsbyClass. This was found in the forum to be a more efficient method of selecting the needed ID or class.
+
+2) I made variables outside the for loops in the function updatePositions because it slows down the CPU to constantly have to refer to the delineations of document.body.[necessaryobject], and it's much faster to refer to variables that have cached that info already. These changes were made in the functions updatePositions and changePizzaSizes as seen below:
 ```
 //calling this outside the switch method gives the variable definitive position
 var newWidth;
@@ -89,7 +91,7 @@ function updatePositions() {
   }
 
 ```
-I also optimized the generation of the background pizzas by dynamically calculating the window height and width:
+3) I optimized the generation of the background pizzas by dynamically calculating the window height and width:
 ```
   // calculates how many pizzas can appear onscreen dynamically
   // by dividing the height of the image by the height of the window
@@ -106,7 +108,7 @@ I also optimized the generation of the background pizzas by dynamically calculat
       elem = document.createElement('img');
       ...
 ```
-4. I optimized the images and minimized both the HTML and CSS.
+4) I also optimized the images and minimized both the HTML and CSS.
 
 ##Next steps
 
